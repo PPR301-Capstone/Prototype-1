@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class SceneManager : MonoBehaviour
+public class GameSceneManager : MonoBehaviour
 {
     public enum Scenes
     {
@@ -11,7 +11,7 @@ public class SceneManager : MonoBehaviour
         Level,
     }
 
-    public static SceneManager Instance;
+    public static GameSceneManager Instance;
 
     public string NextScene;
     public string CurrentScene;
@@ -19,17 +19,34 @@ public class SceneManager : MonoBehaviour
     IEnumerator ChangeSceneAsync()
     {
         yield return new WaitForSeconds(1); // to-do: wait until level loaded
+
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(NextScene);
+
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
+        CurrentScene = NextScene;
     }
 
-    public void ChangeScene(int ID)
+    public void ChangeScene(Scenes sceneID)
     {
-
+        NextScene = sceneID.ToString();
+        StartCoroutine(ChangeSceneAsync());
     }
 
 
 	private void Awake()
 	{
-		Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 	}
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created

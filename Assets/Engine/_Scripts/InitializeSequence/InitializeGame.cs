@@ -8,9 +8,8 @@ public class InitializeGame : MonoBehaviour
     IEnumerator Poll()
     {
         yield return new WaitForSeconds(0.25f);
-
-        if (!loadGame)
-            StartCoroutine(Poll());
+        Debug.Log("Changing Scene");
+        GameSceneManager.Instance.ChangeScene(GameSceneManager.Scenes.MainMenu);
     }
 
 
