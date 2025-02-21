@@ -10,10 +10,15 @@ public class InputHandler : MonoBehaviour
 	// Input Action System
 	PlayerInput playerInput;
 	InputActionMap PlayerActionMap;
+	InputActionMap UIActionMap;
 
+	// Player Inputs
 	InputAction Move;
 	InputAction Look;
 	InputAction Jump;
+
+	// UI Inputs
+	InputAction UISubmit;
 
 	// Event Dispatchers
 	public event Action<Vector2> OnMove;
@@ -28,16 +33,12 @@ public class InputHandler : MonoBehaviour
 	{
 		Vector2 movementInput = context.ReadValue<Vector2>();
 		OnMove?.Invoke(movementInput);
-
-		Debug.Log(movementInput);
 	}
 
 	private void HandleLook(InputAction.CallbackContext context)
 	{
 		Vector2 lookInput = context.ReadValue<Vector2>();
 		OnLook?.Invoke(lookInput);
-
-		Debug.Log(lookInput);
 	}
 
 	private void HandleJump(InputAction.CallbackContext context)
@@ -52,6 +53,7 @@ public class InputHandler : MonoBehaviour
 
 		if (playerInput != null)
 		{
+			// Player Input
 			PlayerActionMap = playerInput.actions.FindActionMap("Player", true);
 			Move = PlayerActionMap.FindAction("Move");
 			Look = PlayerActionMap.FindAction("Look");
@@ -60,6 +62,10 @@ public class InputHandler : MonoBehaviour
 			Move.Enable();
 			Look.Enable();
 			Jump.Enable();
+
+			// UI Input
+			UIActionMap = playerInput.actions.FindActionMap("UI", true);
+			UISubmit = UIActionMap.FindAction("Submit");
 		}
 		else
 		{
@@ -78,6 +84,9 @@ public class InputHandler : MonoBehaviour
 
 		if (Jump != null)
 			Jump.performed += HandleJump;
+
+		if (UISubmit != null)
+			UISubmit.performed += HandleJump;
 	}
 
 	private void OnDisable()
@@ -90,6 +99,9 @@ public class InputHandler : MonoBehaviour
 
 		if (Jump != null)
 			Jump.performed -= HandleJump;
+
+		if (UISubmit != null)
+			UISubmit.performed -= HandleJump;
 	}
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
