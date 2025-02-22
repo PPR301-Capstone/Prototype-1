@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 486836506578462267}
   - component: {fileID: 1999227762204511759}
+  - component: {fileID: 7097477451880708365}
   - component: {fileID: 2719818484573092594}
   m_Layer: 0
   m_Name: QuitButton
@@ -45,6 +46,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3032042635954418706}
   m_CullTransparentMesh: 1
+--- !u!114 &7097477451880708365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3032042635954418706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab4b18596d23fb04d922706a30aa2ec9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonText: {fileID: 2719818484573092594}
+  ButtonString: Quit
+  DefaultColour: {r: 1, g: 1, b: 1, a: 1}
+  FocusColour: {r: 0, g: 1, b: 0, a: 1}
+  DisabledColour: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!114 &2719818484573092594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,6 +164,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4037141119628820648}
   - component: {fileID: 1349740474987736267}
+  - component: {fileID: 3789639220806207809}
   - component: {fileID: 29112919033049775}
   m_Layer: 0
   m_Name: OptionsButton
@@ -181,6 +200,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4928686434022989867}
   m_CullTransparentMesh: 1
+--- !u!114 &3789639220806207809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4928686434022989867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab4b18596d23fb04d922706a30aa2ec9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonText: {fileID: 29112919033049775}
+  ButtonString: Options
+  DefaultColour: {r: 1, g: 1, b: 1, a: 1}
+  FocusColour: {r: 0, g: 1, b: 0, a: 1}
+  DisabledColour: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!114 &29112919033049775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,6 +470,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4891953672125869465}
   - component: {fileID: 9125226221256340865}
+  - component: {fileID: 1422241033867104548}
   - component: {fileID: 5404898944607577128}
   m_Layer: 0
   m_Name: ResumeButton
@@ -469,6 +506,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6130498607038495425}
   m_CullTransparentMesh: 1
+--- !u!114 &1422241033867104548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6130498607038495425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab4b18596d23fb04d922706a30aa2ec9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonText: {fileID: 5404898944607577128}
+  ButtonString: Resume
+  DefaultColour: {r: 1, g: 1, b: 1, a: 1}
+  FocusColour: {r: 0, g: 1, b: 0, a: 1}
+  DisabledColour: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!114 &5404898944607577128
 MonoBehaviour:
   m_ObjectHideFlags: 0

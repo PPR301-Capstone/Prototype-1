@@ -98,6 +98,12 @@ public class InputHandler : MonoBehaviour
 		{
 			Debug.LogError("Error: PlayerInput component missing.");
 		}
+
+		if (Move != null && Look != null && Jump != null)
+		{
+			Instance = this;
+			Debug.Log("InputHandler: Ready");
+		}
 	}
 
 	private void OnEnable()
@@ -146,11 +152,7 @@ public class InputHandler : MonoBehaviour
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
     {
-        if (Move != null && Look != null && Jump != null)
-		{
-			Instance = this;
-			Debug.Log("InputHandler: Ready");
-		}
+
     }
 
 	void Update()
