@@ -79,7 +79,10 @@ public class PauseMenu : MonoBehaviour
     public void Quit()
     {
         Debug.Log("Quit");
-        Time.timeScale = 1.0f;
+
+        UnsubscribeFromEvents();
+
+		Time.timeScale = 1.0f;
         GameSceneManager.Instance.ChangeScene(GameSceneManager.Scenes.MainMenu);
     }
 
@@ -107,12 +110,10 @@ public class PauseMenu : MonoBehaviour
         currentIndex = (currentIndex + (int) -input.y + Buttons.Length) % Buttons.Length;
 
         SelectButton(currentIndex);
-		Debug.Log($"Navigate: {input} {currentIndex}");
     }
 
     private void TogglePause()
     {
-        Debug.Log("Escape");
 		isActive = !isActive;
 
 		if (isActive)
@@ -125,13 +126,26 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    void SubscribeToEvents()
+    {
+		InputHandler.Instance.OnUINavigate += Navigate;
+		InputHandler.Instance.OnEscapePressed += TogglePause;
+		InputHandler.Instance.OnAction += Submit;
+	}
+
+    void UnsubscribeFromEvents()
+    {
+		InputHandler.Instance.OnUINavigate -= Navigate;
+		InputHandler.Instance.OnEscapePressed -= TogglePause;
+		InputHandler.Instance.OnAction -= Submit;
+	}
+
 	private void OnEnable()
 	{
         if (InputHandler.Instance != null)
         {
-			InputHandler.Instance.OnUINavigate += Navigate;
-			InputHandler.Instance.OnEscapePressed += TogglePause;
-            InputHandler.Instance.OnAction += Submit;
+            SubscribeToEvents();
+
 		}
         else
         {
@@ -143,13 +157,7 @@ public class PauseMenu : MonoBehaviour
 	{
         if (InputHandler.Instance != null)
         {
-			InputHandler.Instance.OnUINavigate -= Navigate;
-			InputHandler.Instance.OnEscapePressed -= TogglePause;
-			InputHandler.Instance.OnAction -= Submit;
-		}
-        else
-        {
-			//Debug.LogError("Make sure InputHandler is in the scene");
+            UnsubscribeFromEvents();
 		}
 	}
 
