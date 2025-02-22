@@ -32,6 +32,7 @@ public class GameSceneManager : MonoBehaviour
 
     public void ChangeScene(Scenes sceneID)
     {
+        Debug.Log($"GameSceneManager: Changing Scene [{sceneID}]");
         NextScene = sceneID.ToString();
         StartCoroutine(ChangeSceneAsync());
     }

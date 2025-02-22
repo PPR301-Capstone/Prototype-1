@@ -67,17 +67,36 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
-
+        Debug.Log("Resume");
+        TogglePause();
     }
 
     public void Options()
     {
-
+        Debug.Log("Options");
     }
 
     public void Quit()
     {
+        Debug.Log("Quit");
+        Time.timeScale = 1.0f;
+        GameSceneManager.Instance.ChangeScene(GameSceneManager.Scenes.MainMenu);
+    }
 
+    private void Submit()
+    {
+        switch (currentIndex)
+        {
+            case 0:
+                Resume();
+                break;
+            case 1:
+                Options();
+                break;
+            case 2:
+                Quit();
+                break;
+        }
     }
 
     private void Navigate(Vector2 input)
@@ -91,7 +110,7 @@ public class PauseMenu : MonoBehaviour
 		Debug.Log($"Navigate: {input} {currentIndex}");
     }
 
-    private void Toggle()
+    private void TogglePause()
     {
         Debug.Log("Escape");
 		isActive = !isActive;
@@ -111,7 +130,8 @@ public class PauseMenu : MonoBehaviour
         if (InputHandler.Instance != null)
         {
 			InputHandler.Instance.OnUINavigate += Navigate;
-			InputHandler.Instance.OnEscapePressed += Toggle;
+			InputHandler.Instance.OnEscapePressed += TogglePause;
+            InputHandler.Instance.OnAction += Submit;
 		}
         else
         {
@@ -124,7 +144,8 @@ public class PauseMenu : MonoBehaviour
         if (InputHandler.Instance != null)
         {
 			InputHandler.Instance.OnUINavigate -= Navigate;
-			InputHandler.Instance.OnEscapePressed -= Toggle;
+			InputHandler.Instance.OnEscapePressed -= TogglePause;
+			InputHandler.Instance.OnAction -= Submit;
 		}
         else
         {
@@ -136,6 +157,6 @@ public class PauseMenu : MonoBehaviour
 	void Start()
     {
         Debug.Log("Pause Menu Toggling: " + isActive);
-        Toggle();
+        TogglePause();
     }
 }
