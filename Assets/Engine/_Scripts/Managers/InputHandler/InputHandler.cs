@@ -19,15 +19,26 @@ public class InputHandler : MonoBehaviour
 
 	// UI Inputs
 	InputAction UISubmit;
+	InputAction UINavigate;
+	InputAction UIEscape;
 
 	// Event Dispatchers
+
+	//	Player Movement
 	public event Action<Vector2> OnMove;
 	public event Action<Vector2> OnLook;
 	public event Action OnAction;
 
+	//	UI Navigation
+	public event Action<Vector2> OnUINavigate;
+	public event Action OnEscapePressed;
+
 	// Attributes
 	public Vector2 MovementInput = Vector2.zero;
 	public Vector2 LookInput = Vector2.zero;
+
+	// UI
+	public Vector2 UINav = Vector2.zero;
 
 	private void HandleMove(InputAction.CallbackContext context)
 	{
@@ -45,6 +56,20 @@ public class InputHandler : MonoBehaviour
 	{
 		if (context.performed)
 			OnAction?.Invoke();
+	}
+
+	private void HandleUINavigation(InputAction.CallbackContext context)
+	{
+		Vector2 navigationInput = context.ReadValue<Vector2>();
+
+		if (navigationInput != Vector2.zero)
+			OnUINavigate?.Invoke(navigationInput);
+    }
+
+	private void HandleEscapePressed(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+			OnEscapePressed?.Invoke();
 	}
 
 	private void Awake()
@@ -66,10 +91,18 @@ public class InputHandler : MonoBehaviour
 			// UI Input
 			UIActionMap = playerInput.actions.FindActionMap("UI", true);
 			UISubmit = UIActionMap.FindAction("Submit");
+			UINavigate = UIActionMap.FindAction("Navigate", true);
+			UIEscape = UIActionMap.FindAction("Escape", true);
 		}
 		else
 		{
 			Debug.LogError("Error: PlayerInput component missing.");
+		}
+
+		if (Move != null && Look != null && Jump != null)
+		{
+			Instance = this;
+			Debug.Log("InputHandler: Ready");
 		}
 	}
 
@@ -87,6 +120,12 @@ public class InputHandler : MonoBehaviour
 
 		if (UISubmit != null)
 			UISubmit.performed += HandleJump;
+
+		if (UIEscape != null)
+			UIEscape.performed += HandleEscapePressed;
+
+		if (UINavigate != null)
+			UINavigate.performed += HandleUINavigation;
 	}
 
 	private void OnDisable()
@@ -102,21 +141,24 @@ public class InputHandler : MonoBehaviour
 
 		if (UISubmit != null)
 			UISubmit.performed -= HandleJump;
+
+		if (UIEscape != null)
+			UIEscape.performed -= HandleEscapePressed;
+
+		if (UINavigate != null)
+			UINavigate.performed -= HandleUINavigation;
 	}
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
     {
-        if (Move != null && Look != null && Jump != null)
-		{
-			Instance = this;
-			Debug.Log("InputHandler: Ready");
-		}
+
     }
 
 	void Update()
 	{
 		MovementInput = Move.ReadValue<Vector2>();
 		LookInput = Look.ReadValue<Vector2>();
+		UINav = UINavigate.ReadValue<Vector2>();
 	}
 }
