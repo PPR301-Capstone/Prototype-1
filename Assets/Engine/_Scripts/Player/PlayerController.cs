@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
     public enum MovementStates
     {
         IDLE,
@@ -20,34 +21,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float JumpModifier = 1.0f;
     [SerializeField] float MovementDecay = 0.5f;
 
-    // Input Action System
-    PlayerInput playerInput;
-    InputActionMap PlayerActionMap;
-
-    InputAction Move;
-    InputAction Look;
-    InputAction Jump;
-
     // Forces
     Vector2 currentForce = Vector2.zero;
 
+    // Detection
+    void HandleRays()
+    {
+        // Downray
+
+    }
+
 	private void Awake()
 	{
-        playerInput = GetComponent<PlayerInput>();
-
-        if (playerInput != null)
-        {
-			PlayerActionMap = playerInput.actions.FindActionMap("Player", true);
-            Move = PlayerActionMap.FindAction("Move");
-            Look = PlayerActionMap.FindAction("Look");
-            Jump = PlayerActionMap.FindAction("Jump");
-		}
-        else
-        {
-            Debug.LogError("Error: PlayerInput component missing.");
-        }
+        Instance = this;
 	}
-
 	
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
@@ -57,10 +44,8 @@ public class PlayerController : MonoBehaviour
 
     void HandleInput()
     {
-		if (PlayerActionMap != null)
-		{
-			currentForce = Move.ReadValue<Vector2>();
-		}
+        currentForce = InputHandler.Instance.MovementInput;
+
 
         if (currentForce == Vector2.zero)
             currentForce = currentForce * MovementDecay;
@@ -75,15 +60,5 @@ public class PlayerController : MonoBehaviour
 	private void FixedUpdate()
 	{
         rb2d.AddForce(currentForce * MovementSpeed);
-	}
-
-	private void OnEnable()
-	{
-		PlayerActionMap?.Enable();
-	}
-
-	private void OnDisable()
-	{
-		PlayerActionMap?.Disable();
 	}
 }
