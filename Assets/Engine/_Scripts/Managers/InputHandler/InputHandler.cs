@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using System.Collections;
 
 // High priority for input
 [DefaultExecutionOrder(-100)]
@@ -28,6 +29,12 @@ public class InputHandler : MonoBehaviour
 	public event Action<Vector2> OnMove;
 	public event Action<Vector2> OnLook;
 	public event Action OnAction;
+	public event Action OnJump;
+	public event Action<float> OnJumpHeld;
+	public event Action OnJumpReleased;
+
+	public bool isJumping = false;
+	public float jumpHoldTime = 0;
 
 	//	UI Navigation
 	public event Action<Vector2> OnUINavigate;
@@ -39,6 +46,15 @@ public class InputHandler : MonoBehaviour
 
 	// UI
 	public Vector2 UINav = Vector2.zero;
+
+	IEnumerator JumpTimer()
+	{
+		while (isJumping)
+		{
+			jumpHoldTime = InputHandler.Instance.jumpHoldTime;
+			yield return null;
+		}
+	}
 
 	private void HandleMove(InputAction.CallbackContext context)
 	{
@@ -52,10 +68,17 @@ public class InputHandler : MonoBehaviour
 		OnLook?.Invoke(lookInput);
 	}
 
-	private void HandleJump(InputAction.CallbackContext context)
+	private void HandleJumpStart(InputAction.CallbackContext context)
 	{
-		if (context.performed)
-			OnAction?.Invoke();
+		isJumping = true;
+		jumpHoldTime = 0.0f;
+	}
+
+	private void handleJumpEnd(InputAction.CallbackContext context)
+	{
+		isJumping = false;
+		jumpHoldTime = 0.0f;
+		OnJumpReleased?.Invoke();
 	}
 
 	private void HandleUINavigation(InputAction.CallbackContext context)
@@ -116,10 +139,14 @@ public class InputHandler : MonoBehaviour
 			Look.performed += HandleLook;
 
 		if (Jump != null)
-			Jump.performed += HandleJump;
+		{
+			Jump.started += HandleJumpStart;
+			//Jump.performed += HandleJump;
+			Jump.canceled += handleJumpEnd;
+		}
 
 		if (UISubmit != null)
-			UISubmit.performed += HandleJump;
+			UISubmit.performed += HandleJumpStart; //	to-do: change to standalone event
 
 		if (UIEscape != null)
 			UIEscape.performed += HandleEscapePressed;
@@ -137,10 +164,14 @@ public class InputHandler : MonoBehaviour
 			Look.performed -= HandleLook;
 
 		if (Jump != null)
-			Jump.performed -= HandleJump;
+		{
+			Jump.started -= HandleJumpStart;
+			//Jump.performed -= HandleJump;
+			Jump.canceled -= handleJumpEnd;
+		}
 
 		if (UISubmit != null)
-			UISubmit.performed -= HandleJump;
+			UISubmit.performed -= HandleJumpStart; //	to-do: change to standalone event
 
 		if (UIEscape != null)
 			UIEscape.performed -= HandleEscapePressed;
@@ -160,5 +191,11 @@ public class InputHandler : MonoBehaviour
 		MovementInput = Move.ReadValue<Vector2>();
 		LookInput = Look.ReadValue<Vector2>();
 		UINav = UINavigate.ReadValue<Vector2>();
+
+		if (isJumping)
+		{
+			jumpHoldTime += Time.deltaTime;
+			OnJumpHeld?.Invoke(jumpHoldTime);
+		}
 	}
 }
