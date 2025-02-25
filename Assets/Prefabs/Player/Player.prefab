@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: d37234632dc3c9342ab1c8a9ac2d52a9, type: 3}
+  m_Sprite: {fileID: -2107602781, guid: 3e5345f895de3354286716097a2c59db, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -184,8 +184,17 @@ MonoBehaviour:
   IsPlayerControlDisabled: 1
   CanJump: 0
   MovementSpeed: 3
-  JumpModifier: 1
   MovementDecay: 0.5
+  JumpCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  MinJumpForce: 5
+  MaxJumpForce: 10
+  JumpHoldDuration: 0.5
+  HorizontalLinearDamping: 0.75
   GroundSensor: {fileID: 1353434594097557895}
 --- !u!114 &6317222548902630287
 MonoBehaviour:
