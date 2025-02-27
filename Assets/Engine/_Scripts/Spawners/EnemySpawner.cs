@@ -1,16 +1,33 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemySpawner : Spawner
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+	public EnemySpawner() : base()
+	{
+		base.DebugColour = Color.red;
+	}
+
+	[SerializeField] GameObject[] enemies;
+	[SerializeField] bool spawnOnActive = true;
+	[SerializeField] float spawnDelay = 0.5f;
+
+    public void SpawnEnemy()
     {
-        
+        int random = Random.Range(0, enemies.Length);
+
+        GameObject spawnedEnemy = Instantiate(enemies[random]);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	IEnumerator SpawnRoutine()
+	{
+		yield return new WaitForSeconds(spawnDelay);
+
+		SpawnEnemy();
+	}
+
+	private void Start()
+	{
+		StartCoroutine(SpawnRoutine());
+	}
 }
