@@ -3,82 +3,28 @@ using UnityEngine;
 
 public class Sensor : MonoBehaviour
 {
-    public enum SensorType
-    {
-        GROUND,
-        ENEMY,
-        OBSTACLE
-    }
-
-    public SensorType type;
-    [SerializeField] Vector2 RayDirection = Vector2.zero;
-    [SerializeField] float RayDistance = 1.0f;
-    [SerializeField] LayerMask DetectionLayers;
-
-    BoxCollider2D bc;
+    [SerializeField] public LayerMask DetectionLayers;
+    [SerializeField] string DetectionTag = "";
 
     public bool ObstacleDetected = false;
-
     //  Sensor Events
-    public event Action<bool> OnDetectGround;
-    public event Action<bool> OnDetectObstacle;
+    public event Action<bool> OnSensorTriggered;
 
-    void DispatchEvent()
+    public void DispatchEvent()
     {
-		switch (type)
-		{
-			// Special case for ground - for sound events
-			case SensorType.GROUND:
-                OnDetectGround?.Invoke(ObstacleDetected);
-				break;
-			case SensorType.OBSTACLE:
-                OnDetectObstacle?.Invoke(ObstacleDetected);
-				break;
-		}
+		OnSensorTriggered?.Invoke(ObstacleDetected);
 	}
 
-    void HandleRay()
+    public bool CheckLayers(GameObject gobject)
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, RayDirection.normalized, RayDistance, DetectionLayers);
-
-        if (hit.collider != null)
-        {
-            ObstacleDetected = true;
-        }
-        else
-        {
-            ObstacleDetected = false;
-        }
-
-
-		Debug.DrawRay(transform.position, RayDirection.normalized * RayDistance, (ObstacleDetected) ? Color.red : Color.green);
-	}
-
-    public void IsTriggered()
-    {
-        
+        return (((1 << gobject.layer) & DetectionLayers) != 0);
     }
 
-	private void Awake()
-	{
-	    bc = GetComponent<BoxCollider2D>();	
-	}
-
-	// Start is called once before the first execution of Update after the MonoBehaviour is created
-	void Start()
+    public bool CheckTag(GameObject gobject)
     {
-        
-    }
+        if (gobject.tag == DetectionTag || DetectionTag == "")
+            return true;
 
-    // Update is called once per frame
-    void Update()
-    {
-        HandleRay();
-        DispatchEvent();
+        return false;
     }
-
-	private void OnDrawGizmos()
-	{
-		//Debug.DrawLine(this.transform.position, this.transform.position + (Vector3)RayDirection * 1.0f, Color.magenta);
-	}
 }

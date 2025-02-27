@@ -63,6 +63,8 @@ public class PlayerController : MonoBehaviour
     {
         float dst = duration / JumpHoldDuration;
 
+        Debug.Log(CanJump + " " + dst);
+
         if (CanJump && dst < 1)
         {
             jumpForce = new Vector2(0, Mathf.Lerp(MinJumpForce, MaxJumpForce, dst));
@@ -93,8 +95,6 @@ public class PlayerController : MonoBehaviour
 	void Start()
     {
         rb2d = this.GetComponent<Rigidbody2D>();
-
-        GroundSensor.OnDetectGround += GroundDetection;
     }
 
     void LinearDamping()
@@ -131,13 +131,15 @@ public class PlayerController : MonoBehaviour
 
 	private void OnEnable()
 	{
+		GroundSensor.OnSensorTriggered += GroundDetection;
+
 		InputHandler.Instance.OnJumpHeld += HandleJump;
 		InputHandler.Instance.OnJumpReleased += HandleJumpReleased;
 	}
 
 	private void OnDisable()
 	{
-		GroundSensor.OnDetectGround -= GroundDetection;
+		GroundSensor.OnSensorTriggered -= GroundDetection;
 
 		InputHandler.Instance.OnJumpHeld -= HandleJump;
 		InputHandler.Instance.OnJumpReleased -= HandleJumpReleased;
