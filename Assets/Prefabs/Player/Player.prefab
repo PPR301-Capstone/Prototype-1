@@ -73,9 +73,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -304223465
+  m_SortingLayer: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: -2107602781, guid: 3e5345f895de3354286716097a2c59db, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -183,16 +183,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsPlayerControlDisabled: 1
   CanJump: 0
-  MovementSpeed: 3
+  MovementSpeed: 10
   MovementDecay: 0.5
   JumpCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  MinJumpForce: 5
-  MaxJumpForce: 10
+  MinJumpForce: 3
+  MaxJumpForce: 5
   JumpHoldDuration: 0.5
   HorizontalLinearDamping: 0.75
   GroundSensor: {fileID: 1353434594097557895}
@@ -222,7 +240,7 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -249,10 +267,10 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &8518214280514783946
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -364,6 +382,10 @@ PrefabInstance:
     - target: {fileID: -7970826165566402529, guid: a06443f1663f1c942963b7a52997348d, type: 3}
       propertyPath: RayDirection.y
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7970826165566402529, guid: a06443f1663f1c942963b7a52997348d, type: 3}
+      propertyPath: DetectionLayers.m_Bits
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3365667396393087996, guid: a06443f1663f1c942963b7a52997348d, type: 3}
       propertyPath: m_Name

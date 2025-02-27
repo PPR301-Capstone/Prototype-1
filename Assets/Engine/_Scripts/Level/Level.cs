@@ -15,13 +15,34 @@ public class Level : MonoBehaviour
     public float LightIntensity;
 
     [Header("Config")]
-    public GameObject SpawnerParent;
+    public PlayerSpawner PlayerSpawn;
+    public CameraController CameraController;
+
+    public void StartLevel()
+    {
+		CameraController = Camera.main.GetComponent<CameraController>();
+		Debug.Log("Starting Level: " + Name);
+
+        PlayerSpawn.Spawn();
+
+        GameManager.Instance.player = PlayerSpawn.SpawnPlayer().GetComponent<Player>();
+        GameManager.Instance.player.EnableControl();
+
+        CameraController.Instance.SetTarget(GameManager.Instance.player.gameObject);
+		CameraController.Instance.SetType(CameraController.CameraType.Follow);
+    }
+
+    public void StopLevel()
+    {
+        GameManager.Instance.player.DisableControl();
+        CameraController.SetType(CameraController.CameraType.Static);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
-    }
+		
+	}
 
     // Update is called once per frame
     void Update()
