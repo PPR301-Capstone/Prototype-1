@@ -1,40 +1,30 @@
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections;
 
 public class LevelLoadManager : MonoBehaviour
 {
-    public string levelPrefabAddress;
+    public GameObject[] levels;
     GameObject Parent;
     public bool levelLoaded = false;
+    public int currentLevel = 0;
 
     public void Load()
     {
-        StartCoroutine(LoadLevelAsync());
+        StartCoroutine(LoadLevelAsync(levels[currentLevel].name));
     }
 
-    private IEnumerator LoadLevelAsync()
+    private IEnumerator LoadLevelAsync(string levelName)
     {
-        AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(levelPrefabAddress);
+        Debug.Log("Loading: " + levelName);
+        ResourceRequest request = Resources.LoadAsync<GameObject>($"Levels/{levelName}");
+        yield return request;
 
-        yield return handle;
-
-        if (handle.Status == AsyncOperationStatus.Succeeded)
+        if (request.asset != null)
         {
-            GameObject levelInstance = Instantiate(handle.Result);
-
-            levelInstance.transform.parent = Parent.transform;
-            Debug.Log($"Level loaded: {handle.DebugName}");
-
+            Instantiate(request.asset);
+            Debug.Log($"Loaded level");
             levelLoaded = true;
         }
-        else
-        {
-            Debug.LogError("Failed to load level: " + levelPrefabAddress);
-        }
-
-        Addressables.Release(handle);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
