@@ -6,11 +6,13 @@ public class Player : MonoBehaviour
 
     public void EnableControl()
     {
+		Debug.Log("Player enabled");
         playerController.IsPlayerControlDisabled = false;
     }
 
     public void DisableControl()
     {
+		Debug.Log("Player disabled");
 		playerController.IsPlayerControlDisabled = true;
 	}
 
@@ -29,4 +31,19 @@ public class Player : MonoBehaviour
     {
         
     }
+
+	private void OnEnable()
+	{
+		GameManager.Instance.OnPlayerEnable += EnableControl;
+		GameManager.Instance.OnPlayerDisable += DisableControl;
+	}
+
+	private void OnDisable()
+	{
+		if (GameManager.Instance != null)
+		{
+			GameManager.Instance.OnPlayerEnable -= EnableControl;
+			GameManager.Instance.OnPlayerDisable -= DisableControl;
+		}
+	}
 }

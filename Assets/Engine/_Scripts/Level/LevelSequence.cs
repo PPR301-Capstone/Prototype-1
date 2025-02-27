@@ -17,7 +17,7 @@ public class LevelSequence : MonoBehaviour
 			yield return null;
 		}
 
-        Level? level = null!;
+        Level level = null!;
 
         while (level == null)
         {

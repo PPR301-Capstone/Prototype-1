@@ -15,7 +15,6 @@ public class CameraController : MonoBehaviour
 	[Header("Follow Config")]
 	[SerializeField] private GameObject Target;
 	[SerializeField] private CameraType cameraType;
-	[SerializeField] private float followDistance = 2f;
 	[SerializeField] private float followSpeed = 5.0f;
 
 	[Header("Curves")]
