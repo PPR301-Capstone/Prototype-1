@@ -23,8 +23,6 @@ public class Level : MonoBehaviour
 		CameraController = Camera.main.GetComponent<CameraController>();
 		Debug.Log("Starting Level: " + Name);
 
-        PlayerSpawn.Spawn();
-
         GameManager.Instance.player = PlayerSpawn.SpawnPlayer().GetComponent<Player>();
         GameManager.Instance.player.EnableControl();
 

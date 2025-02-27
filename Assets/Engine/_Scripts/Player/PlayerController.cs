@@ -95,8 +95,6 @@ public class PlayerController : MonoBehaviour
         rb2d = this.GetComponent<Rigidbody2D>();
 
         GroundSensor.OnDetectGround += GroundDetection;
-        InputHandler.Instance.OnJumpHeld += HandleJump;
-        InputHandler.Instance.OnJumpReleased += HandleJumpReleased;
     }
 
     void LinearDamping()
@@ -131,11 +129,17 @@ public class PlayerController : MonoBehaviour
         rb2d.AddForce(currentForce * MovementSpeed);
 	}
 
+	private void OnEnable()
+	{
+		InputHandler.Instance.OnJumpHeld += HandleJump;
+		InputHandler.Instance.OnJumpReleased += HandleJumpReleased;
+	}
+
 	private void OnDisable()
 	{
 		GroundSensor.OnDetectGround -= GroundDetection;
 
-		InputHandler.Instance.OnJumpHeld += HandleJump;
-		InputHandler.Instance.OnJumpReleased += HandleJumpReleased;
+		InputHandler.Instance.OnJumpHeld -= HandleJump;
+		InputHandler.Instance.OnJumpReleased -= HandleJumpReleased;
 	}
 }

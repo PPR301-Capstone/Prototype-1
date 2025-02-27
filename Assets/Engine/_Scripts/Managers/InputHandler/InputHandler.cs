@@ -29,7 +29,7 @@ public class InputHandler : MonoBehaviour
 	public event Action<Vector2> OnMove;
 	public event Action<Vector2> OnLook;
 	public event Action OnAction;
-	public event Action OnJump;
+	//public event Action OnJump;
 	public event Action<float> OnJumpHeld;
 	public event Action OnJumpReleased;
 

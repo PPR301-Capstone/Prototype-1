@@ -30,8 +30,6 @@ public class PauseMenu : MonoBehaviour
 		currentButton = Buttons[index];
 
         currentButton.Focus();
-
-        Debug.Log(currentButton);
 	}
 
     void RefreshButtons()
@@ -47,7 +45,7 @@ public class PauseMenu : MonoBehaviour
         Parent.SetActive(true);
 		RefreshButtons();
 
-		Time.timeScale = 0.0f;
+        GameManager.Instance.Pause();
 
         currentIndex = 0;
         SelectButton(currentIndex);
@@ -60,8 +58,8 @@ public class PauseMenu : MonoBehaviour
 
 		Parent.SetActive(false);
 
-        Time.timeScale = 1.0f;
-        currentButton = null;
+		GameManager.Instance.Unpause();
+		currentButton = null;
         currentIndex = 0;
     }
 
@@ -130,14 +128,14 @@ public class PauseMenu : MonoBehaviour
     {
 		InputHandler.Instance.OnUINavigate += Navigate;
 		InputHandler.Instance.OnEscapePressed += TogglePause;
-		InputHandler.Instance.OnAction += Submit;
+		InputHandler.Instance.OnUISubmit += Submit;
 	}
 
     void UnsubscribeFromEvents()
     {
 		InputHandler.Instance.OnUINavigate -= Navigate;
 		InputHandler.Instance.OnEscapePressed -= TogglePause;
-		InputHandler.Instance.OnAction -= Submit;
+		InputHandler.Instance.OnUISubmit -= Submit;
 	}
 
 	private void OnEnable()

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class GameManager : MonoBehaviour
 
     public Player player;
 
+    public event Action OnPlayerDisable;
+    public event Action OnPlayerEnable;
+
     void LoadLevel()
     {
         if (levelSequence != null)
@@ -23,6 +27,20 @@ public class GameManager : MonoBehaviour
 
         }
     }
+
+    public void Pause()
+    {
+        OnPlayerDisable?.Invoke();
+
+        Time.timeScale = 0.0f;
+    }
+
+    public void Unpause()
+    {
+        OnPlayerEnable?.Invoke();
+
+		Time.timeScale = 1.0f;
+	}
 
 	private void Awake()
 	{
