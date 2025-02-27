@@ -14,16 +14,16 @@ public class RaySensor : Sensor
 		if (hit.collider != null)
 		{
 			
-			ObstacleDetected = true;
+			isTriggered = true;
 		}
 		else
 		{
-			ObstacleDetected = false;
+			isTriggered = false;
 		}
 
 		base.DispatchEvent();
 
-		Debug.DrawRay(transform.position, RayDirection.normalized * RayDistance, (ObstacleDetected) ? Color.red : Color.green);
+		Debug.DrawRay(transform.position, RayDirection.normalized * RayDistance, (isTriggered) ? Color.red : Color.green);
 	}
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created

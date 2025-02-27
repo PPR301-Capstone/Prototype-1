@@ -5,8 +5,9 @@ using UnityEngine;
 public class AreaSensor : Sensor
 {
     CircleCollider2D cc;
-	[SerializeField] float radius = 1.0f;
 	public float triggerTime = 0.0f;
+
+	GameObject triggeredObject;
 
 	//	Events
 	public event Action OnTriggerStart;
@@ -18,18 +19,12 @@ public class AreaSensor : Sensor
 		cc = GetComponent<CircleCollider2D>();
 	}
 
-	private void OnValidate()
-	{
-		if (cc != null)
-			cc.radius = radius;
-	}
-
 	IEnumerator StartTriggerTimer()
 	{
-		while (base.ObstacleDetected)
+		while (base.isTriggered)
 		{
-			triggerTime += Time.deltaTime;
 			yield return null;
+			triggerTime += Time.deltaTime;
 		}
 	}
 
@@ -49,8 +44,9 @@ public class AreaSensor : Sensor
 	{
 		if (CheckLayers(collision.gameObject) && CheckTag(collision.gameObject))
 		{
-			ObstacleDetected = true;
+			isTriggered = true;
 			OnTriggerStart?.Invoke();
+			triggeredObject = collision.gameObject;
 			StartCoroutine(StartTriggerTimer());
 		}
 	}
@@ -59,8 +55,11 @@ public class AreaSensor : Sensor
 	{
 		if (CheckLayers(collision.gameObject) && CheckTag(collision.gameObject))
 		{
-			ObstacleDetected = true;
+			isTriggered = true;
+
+			Debug.Log(triggerTime);
 			OnTriggerStay?.Invoke(triggerTime);
+			Debug.DrawLine(this.transform.position, triggeredObject.transform.position, Color.magenta);
 		}
 	}
 
@@ -68,9 +67,19 @@ public class AreaSensor : Sensor
 	{
 		if (CheckLayers(collision.gameObject) && CheckTag(collision.gameObject))
 		{
-			ObstacleDetected = false;
+			isTriggered = false;
 			StopCoroutine(StartTriggerTimer());
 			OnTriggerEnd?.Invoke();
+			triggeredObject = null;
+		}
+	}
+
+	private void OnDrawGizmos()
+	{
+		if (cc != null)
+		{
+			Gizmos.color = Color.magenta;
+			Gizmos.DrawWireSphere(this.transform.position, cc.radius);
 		}
 	}
 }

@@ -6,13 +6,13 @@ public class Sensor : MonoBehaviour
     [SerializeField] public LayerMask DetectionLayers;
     [SerializeField] string DetectionTag = "";
 
-    public bool ObstacleDetected = false;
+    public bool isTriggered = false;
     //  Sensor Events
     public event Action<bool> OnSensorTriggered;
 
     public void DispatchEvent()
     {
-		OnSensorTriggered?.Invoke(ObstacleDetected);
+		OnSensorTriggered?.Invoke(isTriggered);
 	}
 
     public bool CheckLayers(GameObject gobject)
