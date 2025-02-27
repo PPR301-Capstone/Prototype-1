@@ -68,6 +68,8 @@ public class AreaSensor : Sensor
 		if (CheckLayers(collision.gameObject) && CheckTag(collision.gameObject))
 		{
 			isTriggered = false;
+			triggerTime = 0.0f;
+
 			StopCoroutine(StartTriggerTimer());
 			OnTriggerEnd?.Invoke();
 			triggeredObject = null;
