@@ -11,11 +11,21 @@ public class LevelSequence : MonoBehaviour
     {
 		LevelLoadManager.Load();
 
+        Debug.Log("Loading Level Async");
         while (!LevelLoadManager.levelLoaded)
         {
 			yield return null;
 		}
-		
+
+        Level? level = null!;
+
+        while (level == null)
+        {
+            level = GameObject.FindFirstObjectByType<Level>();
+        }
+
+        level.StartLevel();
+
         uiOverlay.Hide();
     }
 
@@ -38,7 +48,7 @@ public class LevelSequence : MonoBehaviour
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
     {
-        LoadLevel();
+        //LoadLevel();
     }
 
     // Update is called once per frame

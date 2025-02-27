@@ -5,7 +5,7 @@ public class CameraController : MonoBehaviour
 {
 	public static CameraController Instance;
 
-	private enum CameraType
+	public enum CameraType
 	{
 		Static,
 		Follow,
@@ -28,6 +28,15 @@ public class CameraController : MonoBehaviour
 	private bool isCameraShake = false;
 	Vector2 shakeOffset = Vector2.zero;
 
+	public void SetTarget(GameObject target)
+	{
+		this.Target = target;
+	}
+
+	public void SetType(CameraType type)
+	{
+		this.cameraType = type;
+	}
 
 	void Start()
 	{

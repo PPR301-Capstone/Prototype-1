@@ -39,6 +39,7 @@ public class InputHandler : MonoBehaviour
 	//	UI Navigation
 	public event Action<Vector2> OnUINavigate;
 	public event Action OnEscapePressed;
+	public event Action OnUISubmit;
 
 	// Attributes
 	public Vector2 MovementInput = Vector2.zero;
@@ -95,6 +96,12 @@ public class InputHandler : MonoBehaviour
 			OnEscapePressed?.Invoke();
 	}
 
+	private void HandleUISubmit(InputAction.CallbackContext context)
+	{
+		if (context.performed)
+			OnUISubmit?.Invoke();
+	}
+
 	private void Awake()
 	{
 		playerInput = GetComponent<PlayerInput>();
@@ -146,7 +153,7 @@ public class InputHandler : MonoBehaviour
 		}
 
 		if (UISubmit != null)
-			UISubmit.performed += HandleJumpStart; //	to-do: change to standalone event
+			UISubmit.performed += HandleUISubmit;
 
 		if (UIEscape != null)
 			UIEscape.performed += HandleEscapePressed;

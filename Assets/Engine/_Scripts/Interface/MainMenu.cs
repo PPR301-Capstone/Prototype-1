@@ -35,12 +35,12 @@ public class MainMenu : MonoBehaviour
 
 	private void OnEnable()
 	{
-        InputHandler.Instance.OnAction += EnterPressed;
+        InputHandler.Instance.OnUISubmit += EnterPressed;
 	}
 
 	private void OnDisable()
 	{
-		InputHandler.Instance.OnAction -= EnterPressed;
+		InputHandler.Instance.OnUISubmit -= EnterPressed;
 	}
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
