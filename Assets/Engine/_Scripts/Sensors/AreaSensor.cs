@@ -28,6 +28,14 @@ public class AreaSensor : Sensor
 		}
 	}
 
+	public GameObject GetCurrentTriggeredObject()
+	{
+		if (triggeredObject == null)
+			return null;
+
+		return triggeredObject;
+	}
+
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
     {
@@ -57,7 +65,6 @@ public class AreaSensor : Sensor
 		{
 			isTriggered = true;
 
-			Debug.Log(triggerTime);
 			OnTriggerStay?.Invoke(triggerTime);
 			Debug.DrawLine(this.transform.position, triggeredObject.transform.position, Color.magenta);
 		}
