@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8ee3dc9787e112544a22ea69f2296493
+guid: ab4fad2a58fde4948a69471cc6feca84
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,29 +97,29 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Grass_0
+      name: Grass1_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 2
         y: 0
-        width: 32
+        width: 31
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4730989b99e9d724284b4da6481a52cb
-      internalID: 988855195
+      spriteID: dda4b681bff94ed45b7e9243f0f43c0e
+      internalID: -2143408212
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_1
+      name: Grass1_1
       rect:
         serializedVersion: 2
         x: 32
@@ -127,37 +127,37 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 20a1a9530278b384dbc99c0be9774361
-      internalID: -1849853411
+      spriteID: 483a56667b74bb84b8966aae1bf4afa3
+      internalID: -1647919475
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass_2
+      name: Grass1_2
       rect:
         serializedVersion: 2
-        x: 64
+        x: 63
         y: 0
-        width: 32
+        width: 30
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9b1823dd67f245d4daca8cce3243f37d
-      internalID: 897302193
+      spriteID: 1a1a5469674c93541b99dab4b581029c
+      internalID: 2058294029
       vertices: []
       indices: 
       edges: []
@@ -166,7 +166,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 4650f0aa88b071a4b9945a3b960ed61a
+    spriteID: 5e2cf6da6acfe6f4f96117dc76c86413
     internalID: 0
     vertices: []
     indices: 
@@ -176,9 +176,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Grass_0: 988855195
-      Grass_1: -1849853411
-      Grass_2: 897302193
+      Grass1_0: -2143408212
+      Grass1_1: -1647919475
+      Grass1_2: 2058294029
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
