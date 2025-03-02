@@ -39,7 +39,6 @@ public class AgentController : MonoBehaviour
 		reachedDestination = false;
 		isMoving = true;
 
-		
 		Debug.DrawLine(this.transform.position, destination, Color.red, 1.5f);
 	}
 
@@ -76,7 +75,7 @@ public class AgentController : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		if (isMoving)
+		if (isMoving && !this.GetComponent<EnemyAgent>().isAttacking)
 		{
 			rb2d.AddForce(moveDirection * movementSpeed);
 		}

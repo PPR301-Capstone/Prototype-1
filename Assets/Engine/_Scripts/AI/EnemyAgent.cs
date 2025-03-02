@@ -37,7 +37,8 @@ public class EnemyAgent : Agent
     public bool isWithinRange = false;
 
 
-    private bool isAttacking = false;
+    [SerializeField] float attackRange = 0.5f;
+    public bool isAttacking = false;
     public float attackCooldown = 1.5f;
 
     AgentState currentState;
@@ -88,17 +89,11 @@ public class EnemyAgent : Agent
         if (isAttacking) yield break;
 
         isAttacking = true;
-        //StopMovement();
+		agentController.StopMovement();
 
-        if (target != null)
+		if (target != null)
         {
-            PlayerController player = target.GetComponent<PlayerController>();
-
-            if (player != null)
-            {
-                Debug.Log($"{this.name} attacked Player");
-                player.TakeDamage(1);
-            }
+            //to-do method which starts animation
         }
 
         yield return new WaitForSeconds(attackCooldown);
@@ -115,14 +110,29 @@ public class EnemyAgent : Agent
 		}
 
         Debug.Log($"{this.name} reached: {PatrolPoints[patrolIndex].name}");
-        ResetState();
-
+        
         yield return new WaitForSeconds(PatrolPoints[patrolIndex].MovementDelay);
-    }
+
+		ResetState();
+	}
 
     IEnumerator HuntRoutine()
     {
-        yield return null;
+        while (isChasingPlayer)
+        {
+            if (Vector3.Distance(this.transform.position, target.transform.position) <= attackRange)
+            {
+                if (!isAttacking)
+                {
+					StartCoroutine(AttackPlayer());
+				}
+                
+                yield return new WaitForSeconds(attackCooldown);
+            }
+
+			yield return null;
+		}
+        
     }
 
     public void ResetState()
@@ -150,6 +160,8 @@ public class EnemyAgent : Agent
         agentController.reachedDestination = true;
         isChasingPlayer = true;
         StopCoroutine(PatrolRoutine());
+        StartCoroutine(HuntRoutine());
+
         agentController.SetDestination(target.transform.position);
     }
 
@@ -157,7 +169,6 @@ public class EnemyAgent : Agent
     {
         if (duration >= detectTime)
         {
-            Debug.Log("Target detected");
             currentState = AgentState.Hunt;
 
             target = playerTrigger.triggeredObject;
@@ -173,7 +184,6 @@ public class EnemyAgent : Agent
         }
         else
         {
-            //if (Vector3.Distance(this.transform.position, ))
             currentState = AgentState.Idle;
             isChasingPlayer = false;
             target = null;
@@ -211,5 +221,11 @@ public class EnemyAgent : Agent
 	{
 		playerTrigger.OnTriggerStay -= HandleDetection;
         playerTrigger.OnTriggerEnd -= HandleDetection;
+	}
+
+	private void OnDrawGizmos()
+	{
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(this.transform.position, attackRange);
 	}
 }
