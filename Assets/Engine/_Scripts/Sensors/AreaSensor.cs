@@ -7,7 +7,7 @@ public class AreaSensor : Sensor
     CircleCollider2D cc;
 	public float triggerTime = 0.0f;
 
-	GameObject triggeredObject;
+	public GameObject triggeredObject;
 
 	//	Events
 	public event Action OnTriggerStart;

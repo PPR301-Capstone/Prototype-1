@@ -8,14 +8,14 @@ public class EnemyAgent : Agent
         Idle,
         Patrol,
         Hunt,
-        Attack // New attack stake                              *NEW*
+        Attack
     }
 
     //  Agent Config
     [Header("Agent Config")]
     [SerializeField] AgentState defaultState;
-    [SerializeField] Vector2[] PatrolPoints;
-    int patrolIndex = 0;
+    [SerializeField] Waypoint[] PatrolPoints;
+    int patrolIndex = -1;
     [SerializeField] float pollInterval;
     [SerializeField] string[] targets;
 
@@ -25,7 +25,7 @@ public class EnemyAgent : Agent
 
     //  Sensors
     [Header("Sensors")]
-    [SerializeField] AreaSensor playerTrigger; // using this for attack aswell :)
+    [SerializeField] AreaSensor playerTrigger;
     [SerializeField] RaySensor eyeLine;
 
     [Header("Detection Protocol")]
@@ -36,14 +36,11 @@ public class EnemyAgent : Agent
     public bool isChasingPlayer = false;
     public bool isWithinRange = false;
 
-    // bool and float for attack enum                           *NEW*
+
     private bool isAttacking = false;
     public float attackCooldown = 1.5f;
 
     AgentState currentState;
-
-    //  Movement
-    Rigidbody2D rb2d; // store rigidbody ref for later      *NEW*
 
     IEnumerator BehaviourPoll()
     {
@@ -59,13 +56,26 @@ public class EnemyAgent : Agent
                 else
                 {
                     currentState = AgentState.Patrol;
-                }
+					HandlePatrol();
+				}
             }
 
-            if (currentState == AgentState.Hunt && isWithinRange) // if agent is hunting and is within range it will attack           **NEW**
+            if (currentState == AgentState.Patrol)
+            {
+
+            }
+
+            if (currentState == AgentState.Hunt)
+            {
+                
+            }
+
+            if (currentState == AgentState.Hunt && isWithinRange)
             {
                 currentState = AgentState.Attack;
-                StartCoroutine(AttackPlayer()); // Attack when in range
+
+                if (!isAttacking)
+                    StartCoroutine(AttackPlayer());
             }
 
             Debug.Log($"{this.name}: {currentState}");
@@ -75,10 +85,10 @@ public class EnemyAgent : Agent
 
     IEnumerator AttackPlayer()
     {
-        if (isAttacking) yield break; // prevents multiple attack sequences at the same time            *NEW*
+        if (isAttacking) yield break;
 
         isAttacking = true;
-        StopMovement(); // stops enemy movement when attacking      **NEW** so the player might have a chance to avoid or dodge instead of being chased and attacked
+        //StopMovement();
 
         if (target != null)
         {
@@ -87,62 +97,94 @@ public class EnemyAgent : Agent
             if (player != null)
             {
                 Debug.Log($"{this.name} attacked Player");
-                player.TakeDamage(1); // Inflicts Damage to player at the cost of 1 single life at a time               *NEW*    **requires Damage system**
+                player.TakeDamage(1);
             }
         }
 
-        yield return new WaitForSeconds(attackCooldown); // so they enemy doesnt spring multi attacks before the player can move away
+        yield return new WaitForSeconds(attackCooldown);
         isAttacking = false;
-
     }
 
-    void StopMovement() // stops enemy movement when called during attack          *NEW*
+    IEnumerator PatrolRoutine()
     {
-        rb2d.linearVelocity = Vector2.zero; // stop rigid body movement
-        agentController.enabled = false; // Disable movement logic
+		agentController.SetDestination(PatrolPoints[patrolIndex]);
+
+		while (!agentController.reachedDestination)
+        {
+			yield return null;
+		}
+
+        Debug.Log($"{this.name} reached: {PatrolPoints[patrolIndex].name}");
+        ResetState();
+
+        yield return new WaitForSeconds(PatrolPoints[patrolIndex].MovementDelay);
     }
-   
-    void ResumeMovement()
+
+    IEnumerator HuntRoutine()
     {
-        agentController.enabled = true; // resume mvoement logic
+        yield return null;
     }
 
-
-
+    public void ResetState()
+    {
+        currentState = defaultState;
+    }
 
     void HandlePatrol()
     {
+        Debug.Log($"{this.name}: state: {currentState}");
+
         if (currentState != AgentState.Patrol)
             return;
 
-        if (agentController.targetDestination == null)
-        {
-            agentController.SetDestination(PatrolPoints[patrolIndex]);
-        }
-        else
-        {
+		patrolIndex = (patrolIndex + 1) % PatrolPoints.Length;
 
-        }
+		StartCoroutine(PatrolRoutine());
+	}
+
+    void HandleHunt()
+    {
+        if (currentState != AgentState.Hunt)
+            return;
+
+        agentController.reachedDestination = true;
+        isChasingPlayer = true;
+        StopCoroutine(PatrolRoutine());
+        agentController.SetDestination(target.transform.position);
     }
 
     void HandleDetection(float duration)
     {
         if (duration >= detectTime)
         {
+            Debug.Log("Target detected");
             currentState = AgentState.Hunt;
+
+            target = playerTrigger.triggeredObject;
+            HandleHunt();
         }
     }
 
     void HandleDetection()
     {
-        currentState = AgentState.Idle;
+        if (playerTrigger.isTriggered)
+        {
+
+        }
+        else
+        {
+            //if (Vector3.Distance(this.transform.position, ))
+            currentState = AgentState.Idle;
+            isChasingPlayer = false;
+            target = null;
+        }
     }
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
     {
         agentController = GetComponent<AgentController>();
-        rb2d = GetComponent<Rigidbody2D>(); // initialise rigidbody on start
+
         currentState = defaultState;
         isActive = true;
         StartCoroutine(BehaviourPoll());
@@ -151,34 +193,8 @@ public class EnemyAgent : Agent
     // Update is called once per frame
     void Update()
     {
-        HandlePatrol();
+        
     }
-
-    private void OnTriggerEnter2D(Collider2D other) 
-    {
-
-        if (other.CompareTag("Player"))
-        {
-
-            target = other.gameObject; // set the player as the target
-            isWithinRange = true; // enemy can now attack the player        *NEW*
-
-        }
-
-    }
-
-    private void OnTriggerExit2D(Collider2D other) // detect when player leaves enemy range ( IF AT ALL )       *NEW* redunant check
-    {
-
-        if (other.CompareTag("Player"))
-        {
-            isWithinRange = false; // enemy stops attack and returns to hunting otherwise theyll keep attacking even if the player isnt within range ( look weird )
-            currentState = AgentState.Hunt; //  Return to Hunt stage so that the enemy can return to attacking when the player enters range again              *NEW*
-        }
-
-    }
-
-
 
     private void FixedUpdate()
 	{

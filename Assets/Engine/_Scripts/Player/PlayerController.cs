@@ -53,6 +53,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void TakeDamage(int damage)
+    {
+
+    }
+
     void GroundDetection(bool isGrounded)
     {
         CanJump = isGrounded;
@@ -62,8 +67,6 @@ public class PlayerController : MonoBehaviour
     void HandleJump(float duration)
     {
         float dst = duration / JumpHoldDuration;
-
-        Debug.Log(CanJump + " " + dst);
 
         if (CanJump && dst < 1)
         {
@@ -161,7 +164,7 @@ public class PlayerController : MonoBehaviour
         {
             if (enemy.CompareTag("Enemy"))
             {
-                enemy.GetComponent<EnemyAgent>().TakeDamage(); // player pressed key X all enemies die instantly ( FUNNNN TIMES )) ** TESTING ONLY ***
+                //enemy.GetComponent<EnemyAgent>().TakeDamage(); // player pressed key X all enemies die instantly ( FUNNNN TIMES )) ** TESTING ONLY ***
             }
         }
     }

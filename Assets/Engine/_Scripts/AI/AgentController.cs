@@ -2,54 +2,87 @@ using UnityEngine;
 
 public class AgentController : MonoBehaviour
 {
-    Rigidbody2D rb2d;
+	Rigidbody2D rb2d;
 
-    [Header("Movement Config")]
-    [SerializeField] float movementSpeed = 3.0f;
-    [SerializeField] float movementDecay = 0.5f;
-    [SerializeField] float distanceThreshold = 0.5f;
+	[Header("Movement Config")]
+	[SerializeField] float movementSpeed = 3.0f;
+	[SerializeField] float movementDecay = 0.5f;
+	[SerializeField] float distanceThreshold = 0.1f;
 
-    private bool isMoving = false;
-    public Vector3 targetDestination = Vector3.zero;
-    Vector3 currentForce = Vector3.zero;
+	private bool isMoving = false;
+	public Vector3 targetDestination;
+	private Waypoint currentWaypoint;
 
-    public void SetDestination(Vector3 destination)
-    {
-        targetDestination = destination;
-        Debug.DrawLine(this.transform.position, targetDestination, Color.red, 1.0f);
-    }
+	private Vector3 moveDirection;
+	public bool reachedDestination = true;
 
-    public bool hasReachedDestination()
-    {
-        return (Vector3.Distance(this.transform.position, targetDestination) <= distanceThreshold);
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        rb2d = GetComponent<Rigidbody2D>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        currentForce = (this.transform.position - targetDestination).normalized;
-
-        if (hasReachedDestination())
-        {
-            isMoving = false;
-            currentForce *= movementDecay;
-        }
-        else
-        {
-            isMoving = true;
-        }
-
-        Debug.DrawLine(this.transform.position, this.transform.position + currentForce, Color.magenta);
-    }
-
-	private void FixedUpdate()
+	public void SetDestination(Waypoint destination)
 	{
-		rb2d.AddForce(currentForce * movementSpeed * Time.deltaTime);
+		if (destination == null)
+		{
+			currentWaypoint = null;
+			targetDestination = Vector3.zero;
+			return;
+		}
+
+		currentWaypoint = destination;
+
+		Debug.Log($"Moving to: {destination.name}: {destination.transform.position}");
+		SetDestination(destination.transform.position);
+	}
+
+	public void SetDestination(Vector3 destination)
+	{
+		targetDestination = destination;
+
+		moveDirection = (destination - transform.position).normalized;
+		reachedDestination = false;
+		isMoving = true;
+
+		
+		Debug.DrawLine(this.transform.position, destination, Color.red, 1.5f);
+	}
+
+	public bool HasReachedDestination()
+	{
+		if (targetDestination != null)
+			return Vector3.Magnitude(transform.position - targetDestination) <= distanceThreshold;
+
+		return true;
+	}
+
+	public void StopMovement()
+	{
+		isMoving = false;
+		moveDirection = Vector3.zero;
+	}
+
+	// Start is called before the first frame update
+	void Start()
+	{
+		rb2d = GetComponent<Rigidbody2D>();
+	}
+
+	void Update()
+	{
+		if (HasReachedDestination())
+		{
+			StopMovement();
+			reachedDestination = true;
+		}
+
+		Debug.DrawLine(this.transform.position, this.transform.position + (moveDirection * movementSpeed), Color.yellow);
+	}
+
+	void FixedUpdate()
+	{
+		if (isMoving)
+		{
+			rb2d.AddForce(moveDirection * movementSpeed);
+		}
+		else
+		{
+			rb2d.linearVelocity *= movementDecay;
+		}
 	}
 }
