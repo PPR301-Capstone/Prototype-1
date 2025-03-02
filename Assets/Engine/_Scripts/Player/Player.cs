@@ -34,8 +34,11 @@ public class Player : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameManager.Instance.OnPlayerEnable += EnableControl;
-		GameManager.Instance.OnPlayerDisable += DisableControl;
+        if (GameManager.Instance != null)
+        {
+			GameManager.Instance.OnPlayerEnable += EnableControl;
+			GameManager.Instance.OnPlayerDisable += DisableControl;
+		}
 	}
 
 	private void OnDisable()
