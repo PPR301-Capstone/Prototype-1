@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     //  Components
     Rigidbody2D rb2d;
+    CircleCollider2D circleCollider;
 
     // Configurable Settings
     [Header("Movement Config")]
@@ -34,6 +35,8 @@ public class PlayerController : MonoBehaviour
 
 	[Header("Detection")]
     [SerializeField] Sensor GroundSensor;
+
+    PlayerAnim playerAnim;
 
     // Forces
     Vector2 currentForce = Vector2.zero;
@@ -92,6 +95,7 @@ public class PlayerController : MonoBehaviour
 	private void Awake()
 	{
         Instance = this;
+        playerAnim = GetComponent<PlayerAnim>();
 	}
 	
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -126,6 +130,8 @@ public class PlayerController : MonoBehaviour
 
         Debug.DrawLine(this.transform.position, this.transform.position + (Vector3)currentForce, Color.magenta);
 
+        playerAnim.FlipSprite(currentForce);
+
         if (Input.GetKeyUp(KeyCode.X))
         {
             Attack();
@@ -153,8 +159,18 @@ public class PlayerController : MonoBehaviour
 		InputHandler.Instance.OnJumpHeld -= HandleJump;
 		InputHandler.Instance.OnJumpReleased -= HandleJumpReleased;
 	}
-    
-    void Attack() // Please remove X Key after testing and add functionality 
+
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (collision.gameObject.tag == "WeaponHitbox")
+        {
+            TakeDamage(50);
+
+            Debug.Log("Take Damage");
+        }
+	}
+
+	void Attack() // Please remove X Key after testing and add functionality 
     {
         Debug.Log("Player Just Attacked Yo");
 
