@@ -79,7 +79,7 @@ public class EnemyAgent : Agent
                     StartCoroutine(AttackPlayer());
             }
 
-            Debug.Log($"{this.name}: {currentState}");
+            //Debug.Log($"{this.name}: {currentState}");
             yield return new WaitForSeconds(pollInterval);
         }
     }
@@ -90,15 +90,12 @@ public class EnemyAgent : Agent
 
         isAttacking = true;
 		agentController.StopMovement();
-
-		if (target != null)
-        {
-            //to-do method which starts animation
-        }
+        agentController.Attack(isAttacking);
 
         yield return new WaitForSeconds(attackCooldown);
         isAttacking = false;
-    }
+		agentController.Attack(false);
+	}
 
     IEnumerator PatrolRoutine()
     {

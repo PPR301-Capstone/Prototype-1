@@ -16,6 +16,8 @@ public class AgentController : MonoBehaviour
 	private Vector3 moveDirection;
 	public bool reachedDestination = true;
 
+	EnemyAnim spriteAnim;
+
 	public void SetDestination(Waypoint destination)
 	{
 		if (destination == null)
@@ -50,6 +52,11 @@ public class AgentController : MonoBehaviour
 		return true;
 	}
 
+	public void Attack(bool attackState)
+	{
+		spriteAnim.PlayAttack(attackState);
+	}
+
 	public void StopMovement()
 	{
 		isMoving = false;
@@ -59,6 +66,7 @@ public class AgentController : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
+		spriteAnim = GetComponent<EnemyAnim>();
 		rb2d = GetComponent<Rigidbody2D>();
 	}
 
@@ -69,6 +77,10 @@ public class AgentController : MonoBehaviour
 			StopMovement();
 			reachedDestination = true;
 		}
+
+		
+		spriteAnim.FlipSprite(moveDirection);
+		spriteAnim.PlayWalk(isMoving);
 
 		Debug.DrawLine(this.transform.position, this.transform.position + (moveDirection * movementSpeed), Color.yellow);
 	}

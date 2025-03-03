@@ -2,7 +2,10 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+	
     PlayerController playerController;
+	public int Health;
+	public int MaxHealth = 300;
 
     public void EnableControl()
     {
