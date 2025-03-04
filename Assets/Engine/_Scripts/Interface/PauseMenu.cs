@@ -86,6 +86,9 @@ public class PauseMenu : MonoBehaviour
 
     private void Submit()
     {
+        if (GameManager.Instance.isGameOver)
+            return;
+
         switch (currentIndex)
         {
             case 0:
@@ -114,7 +117,7 @@ public class PauseMenu : MonoBehaviour
     {
 		isActive = !isActive;
 
-		if (isActive)
+		if (isActive && !GameManager.Instance.isGameOver)
         {
             Show();
         }
