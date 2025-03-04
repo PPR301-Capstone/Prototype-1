@@ -281,6 +281,7 @@ GameObject:
   - component: {fileID: 491401147}
   - component: {fileID: 491401149}
   - component: {fileID: 491401148}
+  - component: {fileID: 491401150}
   m_Layer: 5
   m_Name: Heart.No2
   m_TagString: Untagged
@@ -552,6 +553,7 @@ GameObject:
   - component: {fileID: 739987671}
   - component: {fileID: 739987673}
   - component: {fileID: 739987672}
+  - component: {fileID: 739987674}
   m_Layer: 5
   m_Name: Heart.No1
   m_TagString: Untagged
@@ -616,6 +618,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 739987670}
   m_CullTransparentMesh: 1
+--- !u!114 &739987674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739987670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244ccde337de1fa4986a81c937fefe8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 4
+  hearts: []
+  fullHeart: {fileID: 21300000, guid: e3d96a43722ed5f488087e850370efb5, type: 3}
+  emptyHeart: {fileID: 21300000, guid: 9dbb78c63d22006419c75d98b7c5c420, type: 3}
 --- !u!1 &779984526
 GameObject:
   m_ObjectHideFlags: 0
@@ -958,6 +976,7 @@ GameObject:
   - component: {fileID: 1593922363}
   - component: {fileID: 1593922365}
   - component: {fileID: 1593922364}
+  - component: {fileID: 1593922366}
   m_Layer: 5
   m_Name: Heart.No3
   m_TagString: Untagged
@@ -1022,6 +1041,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1593922362}
   m_CullTransparentMesh: 1
+--- !u!114 &1593922366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593922362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244ccde337de1fa4986a81c937fefe8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 4
+  hearts: []
+  fullHeart: {fileID: 21300000, guid: e3d96a43722ed5f488087e850370efb5, type: 3}
+  emptyHeart: {fileID: 21300000, guid: 9dbb78c63d22006419c75d98b7c5c420, type: 3}
 --- !u!1 &1714767240
 GameObject:
   m_ObjectHideFlags: 0

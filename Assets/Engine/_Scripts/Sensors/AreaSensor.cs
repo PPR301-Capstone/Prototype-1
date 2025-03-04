@@ -7,7 +7,7 @@ public class AreaSensor : Sensor
     CircleCollider2D cc;
 	public float triggerTime = 0.0f;
 
-	GameObject triggeredObject;
+	public GameObject triggeredObject;
 
 	//	Events
 	public event Action OnTriggerStart;
@@ -26,6 +26,14 @@ public class AreaSensor : Sensor
 			yield return null;
 			triggerTime += Time.deltaTime;
 		}
+	}
+
+	public GameObject GetCurrentTriggeredObject()
+	{
+		if (triggeredObject == null)
+			return null;
+
+		return triggeredObject;
 	}
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -57,7 +65,6 @@ public class AreaSensor : Sensor
 		{
 			isTriggered = true;
 
-			Debug.Log(triggerTime);
 			OnTriggerStay?.Invoke(triggerTime);
 			Debug.DrawLine(this.transform.position, triggeredObject.transform.position, Color.magenta);
 		}

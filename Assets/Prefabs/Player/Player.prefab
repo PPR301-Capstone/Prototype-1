@@ -185,9 +185,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -304223465
+  m_SortingLayer: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: -847854164, guid: 8275cc5e1beea884dab673f07559cdf2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -263,9 +263,11 @@ GameObject:
   - component: {fileID: 3975290789107787076}
   - component: {fileID: -5344065754584407127}
   - component: {fileID: 8266119440706967517}
+  - component: {fileID: 156127494621410653}
   - component: {fileID: 6317222548902630287}
   - component: {fileID: 2516585956596405420}
   - component: {fileID: 8518214280514783946}
+  - component: {fileID: 6406242499393476131}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -303,6 +305,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 601dfba408d1fd4408398b65404e1ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Health: 3
+  MaxHealth: 300
 --- !u!114 &8266119440706967517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,7 +321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsPlayerControlDisabled: 1
   CanJump: 0
-  MovementSpeed: 10
+  MovementSpeed: 6
   MovementDecay: 0.5
   JumpCurve:
     serializedVersion: 2
@@ -348,6 +352,19 @@ MonoBehaviour:
   JumpHoldDuration: 0.5
   HorizontalLinearDamping: 0.75
   GroundSensor: {fileID: 8668094983512991908}
+--- !u!114 &156127494621410653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5776339061737788578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79cff1db27309a14b84aace394534144, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpriteRenderer: {fileID: 7916549495907158274}
 --- !u!114 &6317222548902630287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,7 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_Actions: {fileID: 0}
   m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
@@ -441,6 +458,28 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!95 &6406242499393476131
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5776339061737788578}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 21a247089ed940b40b8ddc4849c8a2a5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7052609972141668552
 GameObject:
   m_ObjectHideFlags: 0

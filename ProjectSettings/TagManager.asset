@@ -8,6 +8,8 @@ TagManager:
   - Interface
   - Sensor
   - World
+  - Waypoint
+  - WeaponHitbox
   layers:
   - Default
   - TransparentFX
