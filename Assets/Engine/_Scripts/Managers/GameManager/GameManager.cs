@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public event Action OnPlayerEnable;
 
     int score = 0;
+    public bool isGameOver = false;
 
     void LoadLevel()
     {
@@ -34,6 +35,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
 		OnPlayerDisable?.Invoke();
+        isGameOver = true;
         GameOverUI.SetActive(true);
 
         GameOverUI.GetComponent<UIGameOver>().GameOver(score);

@@ -1,17 +1,39 @@
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public class UIGameOver : MonoBehaviour
 {
-    [SerializeField] TextMesh ScoreText;
-
+    [SerializeField] TextMeshProUGUI ScoreText;
+    bool gameOver = false;
     public void GameOver(int score)
     {
         ScoreText.text = score.ToString();
+        gameOver = true;
+
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Continue()
+    {
+        if (!gameOver)
+            return;
+
+		Time.timeScale = 1.0f;
+		GameSceneManager.Instance.ChangeScene(GameSceneManager.Scenes.MainMenu);
+	}
+
+	private void OnEnable()
+	{
+		InputHandler.Instance.OnUISubmit += Continue;
+	}
+
+	private void OnDisable()
+	{
+		InputHandler.Instance.OnUISubmit -= Continue;
+	}
+
+	// Start is called once before the first execution of Update after the MonoBehaviour is created
+	void Start()
     {
         
     }
