@@ -26,7 +26,9 @@ public class Player : MonoBehaviour
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
     {
-        
+		Health = MaxHealth;
+
+		UI_HUD.Instance.RefreshHearts(MaxHealth / 100);
     }
 
     // Update is called once per frame

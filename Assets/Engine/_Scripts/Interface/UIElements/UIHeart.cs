@@ -4,9 +4,10 @@ using UnityEngine.UI;
 public class UIHeart : MonoBehaviour
 {
     [SerializeField] Image Heart;
-
+    public int HeartAmount = 100;
     public void SetHealth(int value)
     {
+        HeartAmount = value;
         Heart.fillAmount = value/100f;
     }
 
