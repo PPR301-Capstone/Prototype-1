@@ -19,6 +19,10 @@ public class PlayerController : MonoBehaviour
 
     //  Components
     Rigidbody2D rb2d;
+
+    private HealthSystem healthSystem; // Ref Health system ********NEW**********
+    private KeySystem keySystem; // Ref Key System ^^^^^
+
     CircleCollider2D circleCollider;
 
     // Configurable Settings
@@ -41,6 +45,11 @@ public class PlayerController : MonoBehaviour
     // Forces
     Vector2 currentForce = Vector2.zero;
     Vector2 jumpForce = Vector2.zero;
+
+    // Damage Cooldown                                      ********NEW*********
+    private bool isInvincible = false;
+    private float invincibilityDuration = 1.0f;
+
 
     // Events
     IEnumerator JumpFinished()
@@ -90,6 +99,10 @@ public class PlayerController : MonoBehaviour
 	private void Awake()
 	{
         Instance = this;
+
+        healthSystem = GetComponent<HealthSystem>(); // Initialise Health System                    *****NEW******
+        keySystem = GetComponent<KeySystem>(); // Initialise Key System ^^^^
+
         playerAnim = GetComponent<PlayerAnim>();
 	}
 	
@@ -167,6 +180,61 @@ public class PlayerController : MonoBehaviour
 			Debug.Log("Take Damage: Hitbox: " + weapon.WeaponDamage);
 		}
 	}
+
+
+    // Damage functionality below                                       ******NEW*******
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if ((other.CompareTag("Enemy") || other.CompareTag("Hazard")) && !isInvincible) // Ensure Enemy Tag Uppercase E
+        {
+            TakeDamage(1);
+        }
+
+        if (other.CompareTag("Key")) // ensure TAG "Key" upper case K 
+        {
+            CollectKey();
+            Destroy(other.gameObject);
+        }
+    }
+
+    /* gotta work out the enemy collider, so that when the player runs into an enemy they dont just get hit,
+     * 
+     * the enemy has to **HIT** them in order for them to lose health ( Max 3 lives == 3 Hits )
+    */
+
+
+    public void TakeDamage(int damage)
+    {
+        healthSystem.TakeDamage(damage); // Call Health Syster              ****NEW****
+
+        if (healthSystem.currentHealth > 0)
+        {
+            StartCoroutine(InvincibilityFrames()); // add Invincibility after successfull hit
+
+        }
+    }
+
+    private IEnumerator InvincibilityFrames() // Wait after getting hit before health comes back on         ****NEW****
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(invincibilityDuration);
+        isInvincible = false;
+    }
+
+    public void CollectKey() // Key Collection Update
+    {
+        if(keySystem != null)
+        {
+            keySystem.CollectKey(); // Update key UI                        *****NEW*****
+        }
+    }
+
+
+
+
+
+
 
 	void Attack() // Please remove X Key after testing and add functionality 
     {
