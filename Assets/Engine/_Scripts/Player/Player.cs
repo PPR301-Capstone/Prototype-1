@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -8,11 +9,36 @@ public class Player : MonoBehaviour
 	public int Health;
 	public int MaxHealth = 300;
 
+	IEnumerator DeathRoutine()
+	{
+		this.GetComponent<CircleCollider2D>().enabled = false;
+		this.GetComponent<Rigidbody2D>().linearVelocity = Vector2.up * 5f;
+		yield return new WaitForSeconds(1.5f);
+		this.GetComponent<Rigidbody2D>().linearVelocity = Vector2.down * 5f;
+		GameManager.Instance.GameOver();
+	}
+
+	public void Die()
+	{
+
+		CameraController.Instance.StopFollowing();
+		Debug.Log("Game Over");
+
+		StartCoroutine(DeathRoutine());
+	}
+
 	public void TakeDamage(int damage)
 	{
-		Health -= damage;
+		if (playerController.IsPlayerControlDisabled)
+			return;
 
+		Health -= damage;
 		UI_HUD.Instance.SetHealth(Health);
+
+		if (Health <= 0)
+		{
+			Die();
+		}
 	}
 
 	public void GiveHealth(int amount)

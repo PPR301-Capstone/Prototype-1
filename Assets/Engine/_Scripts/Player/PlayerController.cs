@@ -175,10 +175,16 @@ public class PlayerController : MonoBehaviour
 		if (collision.gameObject.tag == "WeaponHitbox")
 		{
             Weapon weapon = collision.gameObject.GetComponent<Weapon>();
+
+            Debug.Log(weapon);
 			Player.Instance.TakeDamage(weapon.WeaponDamage);
 
 			Debug.Log("Take Damage: Hitbox: " + weapon.WeaponDamage);
 		}
+        else if (collision.gameObject.tag == "Enemy")
+        {
+            Player.Instance.TakeDamage(15);
+        }
 	}
 
 

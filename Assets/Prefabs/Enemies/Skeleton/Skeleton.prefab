@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 563761810456877350}
   m_Layer: 0
   m_Name: Skeleton
-  m_TagString: WeaponHitbox
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -278,9 +278,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4302473864351091858}
+  - component: {fileID: 3049761444422217376}
   - component: {fileID: 4794691682068307261}
   - component: {fileID: 4452831172789891338}
-  - component: {fileID: 3049761444422217376}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: WeaponHitbox
@@ -303,6 +303,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 631685151623391274}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3049761444422217376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6572927786535725555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c6364a326a82754481400add6a383f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Sword
+  ID: ITEM_DEF
+  weaponType: 0
+  WeaponSpeed: 0
+  WeaponDamage: 25
 --- !u!212 &4794691682068307261
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -404,23 +421,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.5, y: 0.25}
   m_EdgeRadius: 0
---- !u!114 &3049761444422217376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6572927786535725555}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c6364a326a82754481400add6a383f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: Sword
-  ID: ITEM_DEF
-  weaponType: 0
-  WeaponSpeed: 0
-  WeaponDamage: 25
 --- !u!1001 &6121943781370522929
 PrefabInstance:
   m_ObjectHideFlags: 0
