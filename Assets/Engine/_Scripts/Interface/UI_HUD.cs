@@ -16,11 +16,11 @@ public class UI_HUD : MonoBehaviour
 
         for (int i = 0; i < hearts; i++)
         {
-            GameObject _heart = Instantiate(heartPrefab);
+            GameObject _heart = Instantiate(heartPrefab, HeartContainer.transform);
             _heart.name = $"Heart_{i}";
-            _heart.transform.parent = HeartContainer.transform;
 
             Hearts[i] = _heart.GetComponent<UIHeart>();
+            Hearts[i].SetHealth(100);
         }
     }
 
@@ -39,6 +39,23 @@ public class UI_HUD : MonoBehaviour
 
     public void SetHealth(int health)
     {
+        Debug.Log("Set HP: " + health);
+
+        int remainingHealth = health;
+
+        for (int i = 0; i < Hearts.Length; i++)
+        {
+            if (remainingHealth >= 100)
+            {
+                Hearts[i].SetHealth(100);
+                remainingHealth -= 100;
+            }
+            else
+            {
+                Hearts[i].SetHealth(remainingHealth);
+                remainingHealth = 0;
+            }
+        }
 
     }
 

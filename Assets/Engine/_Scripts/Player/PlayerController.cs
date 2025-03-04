@@ -56,11 +56,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
-    {
-
-    }
-
     void GroundDetection(bool isGrounded)
     {
         CanJump = isGrounded;
@@ -165,11 +160,12 @@ public class PlayerController : MonoBehaviour
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
 		if (collision.gameObject.tag == "WeaponHitbox")
-        {
-            TakeDamage(50);
+		{
+            Weapon weapon = collision.gameObject.GetComponent<Weapon>();
+			Player.Instance.TakeDamage(weapon.WeaponDamage);
 
-            Debug.Log("Take Damage");
-        }
+			Debug.Log("Take Damage: Hitbox: " + weapon.WeaponDamage);
+		}
 	}
 
 	void Attack() // Please remove X Key after testing and add functionality 
@@ -195,9 +191,4 @@ public class PlayerController : MonoBehaviour
         rb2d.velocity = Vector2.zero; // Resets the player velocity before applying force ( redundant check so they arent knockback while being knocked back
         rb2d.AddForce(knockbackForce, ForceMode2D.Impulse);
     */
-
-
-
-
-
 }
