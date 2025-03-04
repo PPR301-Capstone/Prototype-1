@@ -10,11 +10,14 @@ public class GameManager : MonoBehaviour
 
     [Header("Level Config")]
     public Level level;
+    [SerializeField] GameObject GameOverUI;
 
     public Player player;
 
     public event Action OnPlayerDisable;
     public event Action OnPlayerEnable;
+
+    int score = 0;
 
     void LoadLevel()
     {
@@ -26,6 +29,15 @@ public class GameManager : MonoBehaviour
         {
 
         }
+    }
+
+    public void GameOver()
+    {
+		OnPlayerDisable?.Invoke();
+        GameOverUI.SetActive(true);
+
+        GameOverUI.GetComponent<UIGameOver>().GameOver(score);
+		Pause();
     }
 
     public void Pause()
@@ -50,6 +62,8 @@ public class GameManager : MonoBehaviour
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
     {
+        GameOverUI.SetActive(false);
+
         LoadLevel();
     }
 

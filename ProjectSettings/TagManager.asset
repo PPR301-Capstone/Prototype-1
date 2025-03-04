@@ -10,6 +10,7 @@ TagManager:
   - World
   - Waypoint
   - WeaponHitbox
+  - Enemy
   layers:
   - Default
   - TransparentFX

@@ -50,6 +50,12 @@ public class CameraController : MonoBehaviour
 		}
 	}
 
+	public void StopFollowing()
+	{
+		cameraType = CameraType.Static;
+		Target = null;
+	}
+
 	private void Follow()
 	{
 		targetPosition = Target.transform.position;
