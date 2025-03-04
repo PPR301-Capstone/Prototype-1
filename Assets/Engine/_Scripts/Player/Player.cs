@@ -2,10 +2,30 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-	
+	public static Player Instance;
+
     PlayerController playerController;
 	public int Health;
 	public int MaxHealth = 300;
+
+	public void TakeDamage(int damage)
+	{
+		Health -= damage;
+
+		UI_HUD.Instance.SetHealth(Health);
+	}
+
+	public void GiveHealth(int amount)
+	{
+		if (Health >= MaxHealth || Health + amount >= MaxHealth)
+		{
+			amount = MaxHealth;
+		}
+		else
+		{
+			Health += amount;
+		}
+	}
 
     public void EnableControl()
     {
@@ -21,8 +41,10 @@ public class Player : MonoBehaviour
 
 	private void Awake()
 	{
+		Instance = this;
 		playerController = GetComponent<PlayerController>();
 	}
+
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
     {
@@ -53,5 +75,7 @@ public class Player : MonoBehaviour
 			GameManager.Instance.OnPlayerEnable -= EnableControl;
 			GameManager.Instance.OnPlayerDisable -= DisableControl;
 		}
+
+		Instance = null;
 	}
 }

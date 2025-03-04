@@ -158,6 +158,8 @@ public class PlayerController : MonoBehaviour
 
 		InputHandler.Instance.OnJumpHeld -= HandleJump;
 		InputHandler.Instance.OnJumpReleased -= HandleJumpReleased;
+
+        Instance = null;
 	}
 
 	private void OnCollisionEnter2D(Collision2D collision)

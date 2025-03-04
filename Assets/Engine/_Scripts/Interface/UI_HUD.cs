@@ -24,7 +24,7 @@ public class UI_HUD : MonoBehaviour
         }
     }
 
-    UIHeart GetCurrentHeart()
+    UIHeart GetCurrentHearts()
     {
         for (int i = 3; i >= 0; i--)
         {
@@ -35,6 +35,11 @@ public class UI_HUD : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void SetHealth(int health)
+    {
+
     }
 
 	private void Awake()
