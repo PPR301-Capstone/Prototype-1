@@ -14,5 +14,5 @@ public class Weapon : Item
 
     public WeaponType weaponType;
     public float WeaponSpeed;
-    public float WeaponDamage;
+    public int WeaponDamage;
 }
