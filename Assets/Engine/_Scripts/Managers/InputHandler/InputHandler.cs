@@ -17,6 +17,7 @@ public class InputHandler : MonoBehaviour
 	InputAction Move;
 	InputAction Look;
 	InputAction Jump;
+	InputAction Attack;
 
 	// UI Inputs
 	InputAction UISubmit;
@@ -29,9 +30,16 @@ public class InputHandler : MonoBehaviour
 	public event Action<Vector2> OnMove;
 	public event Action<Vector2> OnLook;
 	public event Action OnAction;
+
 	//public event Action OnJump;
 	public event Action<float> OnJumpHeld;
 	public event Action OnJumpReleased;
+
+	public event Action<float> OnAttackHeld;
+	public event Action OnAttackReleased;
+
+	public bool isAttacking = false;
+	public float attackHoldTime = 0;
 
 	public bool isJumping = false;
 	public float jumpHoldTime = 0;
@@ -48,14 +56,7 @@ public class InputHandler : MonoBehaviour
 	// UI
 	public Vector2 UINav = Vector2.zero;
 
-	IEnumerator JumpTimer()
-	{
-		while (isJumping)
-		{
-			jumpHoldTime = InputHandler.Instance.jumpHoldTime;
-			yield return null;
-		}
-	}
+
 
 	private void HandleMove(InputAction.CallbackContext context)
 	{
@@ -67,6 +68,33 @@ public class InputHandler : MonoBehaviour
 	{
 		Vector2 lookInput = context.ReadValue<Vector2>();
 		OnLook?.Invoke(lookInput);
+	}
+
+
+	private void HandleAttackStart(InputAction.CallbackContext context)
+	{
+		Debug.Log("Attack Started");
+		isAttacking = true;
+		attackHoldTime = 0.0f;
+	}
+
+	private void HandleAttackStop(InputAction.CallbackContext context)
+	{
+		isAttacking = false;
+
+		Debug.Log("Attack Held: " + attackHoldTime);
+
+		if (context.canceled)
+			OnAttackReleased?.Invoke();
+	}
+
+	IEnumerator JumpTimer()
+	{
+		while (isJumping)
+		{
+			jumpHoldTime = InputHandler.Instance.jumpHoldTime;
+			yield return null;
+		}
 	}
 
 	private void HandleJumpStart(InputAction.CallbackContext context)
@@ -113,10 +141,12 @@ public class InputHandler : MonoBehaviour
 			Move = PlayerActionMap.FindAction("Move");
 			Look = PlayerActionMap.FindAction("Look");
 			Jump = PlayerActionMap.FindAction("Jump");
+			Attack = PlayerActionMap.FindAction("Attack");
 
 			Move.Enable();
 			Look.Enable();
 			Jump.Enable();
+			Attack.Enable();
 
 			// UI Input
 			UIActionMap = playerInput.actions.FindActionMap("UI", true);
@@ -148,8 +178,13 @@ public class InputHandler : MonoBehaviour
 		if (Jump != null)
 		{
 			Jump.started += HandleJumpStart;
-			//Jump.performed += HandleJump;
 			Jump.canceled += handleJumpEnd;
+		}
+
+		if (Attack != null)
+		{
+			Attack.started += HandleAttackStart;
+			Attack.canceled += HandleAttackStop;
 		}
 
 		if (UISubmit != null)
@@ -175,6 +210,12 @@ public class InputHandler : MonoBehaviour
 			Jump.started -= HandleJumpStart;
 			//Jump.performed -= HandleJump;
 			Jump.canceled -= handleJumpEnd;
+		}
+
+		if (Attack != null)
+		{
+			Attack.started -= HandleAttackStart;
+			Attack.canceled -= HandleAttackStop;
 		}
 
 		if (UISubmit != null)
@@ -203,6 +244,12 @@ public class InputHandler : MonoBehaviour
 		{
 			jumpHoldTime += Time.deltaTime;
 			OnJumpHeld?.Invoke(jumpHoldTime);
+		}
+
+		if (isAttacking)
+		{
+			attackHoldTime += Time.deltaTime;
+			OnAttackHeld?.Invoke(attackHoldTime);
 		}
 	}
 }
