@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
 	public int Health;
 	public int MaxHealth = 300;
 
+	[SerializeField] GameObject WeaponSlot;
+	public Weapon currentWeapon;
+
 	IEnumerator DeathRoutine()
 	{
 		this.GetComponent<CircleCollider2D>().enabled = false;
@@ -77,6 +80,15 @@ public class Player : MonoBehaviour
 		Health = MaxHealth;
 
 		UI_HUD.Instance.RefreshHearts(MaxHealth / 100);
+
+		if (WeaponSlot == null)
+			Debug.LogError($"Player does not have weapon slot");
+
+		if (WeaponSlot.transform.childCount > 0)
+		{
+			currentWeapon = WeaponSlot.transform.GetChild(0).gameObject.GetComponent<Weapon>();
+			Debug.Log($"Player equipped: {currentWeapon.name} ({currentWeapon.ID})");
+		}
     }
 
     // Update is called once per frame
