@@ -87,6 +87,7 @@ MonoBehaviour:
   attackRange: 1.2
   isAttacking: 0
   attackCooldown: 1.5
+  currentState: 0
 --- !u!114 &3034220305542916260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,6 +371,10 @@ PrefabInstance:
     - target: {fileID: 874049965013257293, guid: ebf682ff3c9ce044c8f6ef5de91f7b68, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5089157204800323165, guid: ebf682ff3c9ce044c8f6ef5de91f7b68, type: 3}
+      propertyPath: WeaponSpeed
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 5352828795613092192, guid: ebf682ff3c9ce044c8f6ef5de91f7b68, type: 3}
       propertyPath: m_Name

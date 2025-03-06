@@ -46,6 +46,9 @@ public class EnemyAgent : Agent
     public void SetCurrentState(AgentState state)
     {
         currentState = state;
+
+        if (currentState == AgentState.Dead)
+            isActive = false;
     }
 
     IEnumerator BehaviourPoll()
@@ -83,8 +86,12 @@ public class EnemyAgent : Agent
             {
                 currentState = AgentState.Attack;
 
-                if (!isAttacking)
+				yield return new WaitForSeconds(0.5f);
+
+				if (!isAttacking)
                     StartCoroutine(AttackPlayer());
+
+                yield return new WaitForSeconds(attackCooldown);
             }
 
             //Debug.Log($"{this.name}: {currentState}");
