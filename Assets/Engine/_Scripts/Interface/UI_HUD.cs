@@ -56,7 +56,6 @@ public class UI_HUD : MonoBehaviour
                 remainingHealth = 0;
             }
         }
-
     }
 
 	private void Awake()

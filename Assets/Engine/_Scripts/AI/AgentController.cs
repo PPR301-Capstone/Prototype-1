@@ -3,6 +3,8 @@ using UnityEngine;
 public class AgentController : MonoBehaviour
 {
 	Rigidbody2D rb2d;
+	Enemy enemy;
+
 
 	[Header("Movement Config")]
 	[SerializeField] float movementSpeed = 3.0f;
@@ -54,7 +56,7 @@ public class AgentController : MonoBehaviour
 
 	public void Attack(bool attackState)
 	{
-		spriteAnim.PlayAttack(attackState);
+		enemy.CurrentWeapon.Attack();
 	}
 
 	public void StopMovement()
@@ -66,6 +68,7 @@ public class AgentController : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
+		enemy = GetComponent<Enemy>();
 		spriteAnim = GetComponent<EnemyAnim>();
 		rb2d = GetComponent<Rigidbody2D>();
 	}
@@ -87,6 +90,9 @@ public class AgentController : MonoBehaviour
 
 	void FixedUpdate()
 	{
+		if (this.GetComponent<EnemyAgent>().currentState == EnemyAgent.AgentState.Dead)
+			return;
+
 		if (isMoving && !this.GetComponent<EnemyAgent>().isAttacking)
 		{
 			rb2d.AddForce(moveDirection * movementSpeed);

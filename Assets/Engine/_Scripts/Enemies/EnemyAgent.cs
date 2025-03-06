@@ -8,7 +8,8 @@ public class EnemyAgent : Agent
         Idle,
         Patrol,
         Hunt,
-        Attack
+        Attack,
+        Dead
     }
 
     //  Agent Config
@@ -36,12 +37,19 @@ public class EnemyAgent : Agent
     public bool isChasingPlayer = false;
     public bool isWithinRange = false;
 
-
     [SerializeField] float attackRange = 0.5f;
     public bool isAttacking = false;
     public float attackCooldown = 1.5f;
 
-    AgentState currentState;
+    public AgentState currentState;
+
+    public void SetCurrentState(AgentState state)
+    {
+        currentState = state;
+
+        if (currentState == AgentState.Dead)
+            isActive = false;
+    }
 
     IEnumerator BehaviourPoll()
     {
@@ -68,15 +76,22 @@ public class EnemyAgent : Agent
 
             if (currentState == AgentState.Hunt)
             {
-                
-            }
+                if (target != null)
+                {
+					agentController.SetDestination(target.transform.position);
+				}
+			}
 
             if (currentState == AgentState.Hunt && isWithinRange)
             {
                 currentState = AgentState.Attack;
 
-                if (!isAttacking)
+				yield return new WaitForSeconds(0.5f);
+
+				if (!isAttacking)
                     StartCoroutine(AttackPlayer());
+
+                yield return new WaitForSeconds(attackCooldown);
             }
 
             //Debug.Log($"{this.name}: {currentState}");
@@ -87,6 +102,7 @@ public class EnemyAgent : Agent
     IEnumerator AttackPlayer()
     {
         if (isAttacking) yield break;
+        if (currentState == AgentState.Dead) yield break;
 
         isAttacking = true;
 		agentController.StopMovement();
@@ -127,9 +143,8 @@ public class EnemyAgent : Agent
                 yield return new WaitForSeconds(attackCooldown);
             }
 
-			yield return null;
+			yield return attackCooldown;
 		}
-        
     }
 
     public void ResetState()
@@ -158,9 +173,7 @@ public class EnemyAgent : Agent
         isChasingPlayer = true;
         StopCoroutine(PatrolRoutine());
         StartCoroutine(HuntRoutine());
-
-        agentController.SetDestination(target.transform.position);
-    }
+	}
 
     void HandleDetection(float duration)
     {
