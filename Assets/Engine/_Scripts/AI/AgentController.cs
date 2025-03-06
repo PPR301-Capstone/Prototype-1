@@ -90,6 +90,9 @@ public class AgentController : MonoBehaviour
 
 	void FixedUpdate()
 	{
+		if (this.GetComponent<EnemyAgent>().currentState == EnemyAgent.AgentState.Dead)
+			return;
+
 		if (isMoving && !this.GetComponent<EnemyAgent>().isAttacking)
 		{
 			rb2d.AddForce(moveDirection * movementSpeed);

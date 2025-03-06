@@ -20,6 +20,11 @@ public class GameManager : MonoBehaviour
     int score = 0;
     public bool isGameOver = false;
 
+    public void AddScore(int value)
+    {
+        score += value;
+    }
+
     void LoadLevel()
     {
         if (levelSequence != null)

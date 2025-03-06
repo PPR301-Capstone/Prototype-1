@@ -187,44 +187,17 @@ public class PlayerController : MonoBehaviour
 		Instance = null;
 	}
 
-	private void OnCollisionEnter2D(Collision2D collision)
+	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.gameObject.tag == "WeaponHitbox")
 		{
-            Weapon weapon = collision.gameObject.GetComponent<Weapon>();
+			Debug.Log("Weapon hit player");
+			Weapon weapon = collision.gameObject.transform.parent.GetComponent<Weapon>();
 
-            Debug.Log(weapon);
+			Debug.Log(weapon);
 			Player.Instance.TakeDamage(weapon.WeaponDamage);
 
 			Debug.Log("Take Damage: Hitbox: " + weapon.WeaponDamage);
 		}
-        else if (collision.gameObject.tag == "Enemy")
-        {
-            Player.Instance.TakeDamage(15);
-        }
 	}
-
-	void Attack() // Please remove X Key after testing and add functionality 
-    {
-        Debug.Log("Player Just Attacked Yo");
-
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, 1.0f);
-
-        foreach (Collider2D enemy in hitEnemies)
-        {
-            if (enemy.CompareTag("Enemy"))
-            {
-                //enemy.GetComponent<EnemyAgent>().TakeDamage(); // player pressed key X all enemies die instantly ( FUNNNN TIMES )) ** TESTING ONLY ***
-            }
-        }
-    }
-
-    /* heath required for additive (TODO) when merged
-     * // Knockback effect when hit by enemy ( Facing enemy direction ) **NEW** maybe implement
-        Vector2 knockbackDirection = (transform.position - target.transform.position).normalized; // direction away from enemy
-        Vector2 knockbackForce = knockbackDirection * 5f + Vector2.up * 2f; // Push player back slightly up and away
-
-        rb2d.velocity = Vector2.zero; // Resets the player velocity before applying force ( redundant check so they arent knockback while being knocked back
-        rb2d.AddForce(knockbackForce, ForceMode2D.Impulse);
-    */
 }
