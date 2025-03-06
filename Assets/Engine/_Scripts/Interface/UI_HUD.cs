@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class UI_HUD : MonoBehaviour
 {
@@ -8,7 +9,14 @@ public class UI_HUD : MonoBehaviour
     [SerializeField] GameObject HeartContainer;
     [SerializeField] GameObject heartPrefab;
 
+    [SerializeField] TextMeshProUGUI ScoreText;
     private UIHeart[] Hearts;
+
+
+    public void UpdateScore(int score)
+    {
+        ScoreText.text = score.ToString("D5");
+    }
 
     public void RefreshHearts(int hearts)
     {

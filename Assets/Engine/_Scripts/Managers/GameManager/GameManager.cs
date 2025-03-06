@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     public void AddScore(int value)
     {
         score += value;
+
+        UI_HUD.Instance.UpdateScore(score);
     }
 
     void LoadLevel()
